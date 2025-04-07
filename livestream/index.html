@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Live Event</title>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <h1>Live Event Chat</h1>
+  <input id="eventId" placeholder="Event ID" />
+  <input id="message" placeholder="Message" />
+  <button onclick="joinEvent()">Join</button>
+  <button onclick="sendMessage()">Send</button>
+
+  <ul id="chat"></ul>
+
+  <script>
+    const socket = io();
+
+    function joinEvent() {
+      const eventId = document.getElementById("eventId").value;
+      socket.emit("joinEvent", eventId);
+    }
+
+    function sendMessage() {
+      const eventId = document.getElementById("eventId").value;
+      const message = document.getElementById("message").value;
+      socket.emit("sendMessage", { eventId, message });
+    }
+
+    socket.on("userJoined", (msg) => {
+      document.getElementById("chat").innerHTML += `<li>${msg}</li>`;
+    });
+
+    socket.on("newMessage", ({ message, timestamp }) => {
+      document.getElementById("chat").innerHTML += `<li>${timestamp}: ${message}</li>`;
+    });
+  </script>
+</body>
+</html>
