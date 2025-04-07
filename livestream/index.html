@@ -3,15 +3,20 @@
 <head>
   <title>Live Event</title>
   <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <h1>Live Event Chat</h1>
-  <input id="eventId" placeholder="Event ID" />
-  <input id="message" placeholder="Message" />
-  <button onclick="joinEvent()">Join</button>
-  <button onclick="sendMessage()">Send</button>
+<body class="bg-gray-100 min-h-screen p-8">
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6 text-gray-800">Live Event Chat</h1>
+    <div class="flex gap-4 mb-4">
+      <input id="eventId" placeholder="Event ID" class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      <input id="message" placeholder="Message" class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      <button onclick="joinEvent()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Join</button>
+      <button onclick="sendMessage()" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Send</button>
+    </div>
 
-  <ul id="chat"></ul>
+    <ul id="chat" class="space-y-2 bg-white p-4 rounded-lg shadow"></ul>
+  </div>
 
   <script>
     const socket = io();
@@ -28,11 +33,11 @@
     }
 
     socket.on("userJoined", (msg) => {
-      document.getElementById("chat").innerHTML += `<li>${msg}</li>`;
+      document.getElementById("chat").innerHTML += `<li class="text-gray-700 p-2 bg-gray-50 rounded">${msg}</li>`;
     });
 
     socket.on("newMessage", ({ message, timestamp }) => {
-      document.getElementById("chat").innerHTML += `<li>${timestamp}: ${message}</li>`;
+      document.getElementById("chat").innerHTML += `<li class="text-gray-700 p-2 bg-gray-50 rounded">${timestamp}: ${message}</li>`;
     });
   </script>
 </body>
